@@ -81,6 +81,7 @@ public class Main extends SimpleApplication {
         initBox(new Vector3f(-2, 3, -2));
 
         flyCam.setMoveSpeed(100);
+        models m=new models(this);
     }
 
     @Override
