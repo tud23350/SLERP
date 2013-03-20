@@ -24,6 +24,7 @@ public class models {
     Cylinder c2;
     Geometry cylinder1;
     Geometry cylinder2;
+    Geometry e1;
 
     public models(Main main) {
 
@@ -31,9 +32,14 @@ public class models {
         elephant1.scale(0.05f, 0.05f, 0.05f);
         elephant1.rotate(0.0f, -3.0f, 0.0f);
         elephant1.setLocalTranslation(0.0f, 0f, -2.0f);
-        main.getRootNode().attachChild(elephant1);
 
-        TangentBinormalGenerator.generate(((Geometry) elephant1).getMesh(), true);
+        Spatial elephant2 = main.getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
+        elephant2.scale(0.05f, 0.05f, 0.05f);
+        elephant2.rotate(3.0f, -3.0f, 0.0f);
+        elephant2.setLocalTranslation(0.0f, -5.0f, -2.0f);
+/* Attempting to add shadowing
+        e1=visit(elephant1);
+        TangentBinormalGenerator.generate(e1.getMesh(), true);
         Material mat = new Material(main.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Ambient", ColorRGBA.White);
@@ -41,14 +47,13 @@ public class models {
         mat.setColor("Specular", ColorRGBA.White);
         mat.setFloat("Shininess", 1);
 
-        Spatial elephant2 = main.getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
-        elephant2.scale(0.05f, 0.05f, 0.05f);
-        elephant2.rotate(3.0f, -3.0f, 0.0f);
-        elephant2.setLocalTranslation(0.0f, -5.0f, -2.0f);
+        elephant1.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         elephant2.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
 
         elephant1.setMaterial(mat);
         elephant2.setMaterial(mat);
+        * 
+        */
         main.getRootNode().attachChild(elephant1);
         main.getRootNode().attachChild(elephant2);
         /*
@@ -75,8 +80,14 @@ public class models {
          Matrix3f m = new Matrix3f(1, 1, 1, 2, 2, 2, 2, 2, 2);
          cylinder1.setLocalRotation(m);
          */
+    }
 
+    public Geometry visit(Spatial spatial) {
+        Geometry geo = null;
 
-
+        if ((spatial instanceof Geometry) && "elephant1".equals(spatial.getName())) {
+            geo = (Geometry) spatial;
+        }
+        return geo;
     }
 }
