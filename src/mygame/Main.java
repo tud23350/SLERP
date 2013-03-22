@@ -68,7 +68,7 @@ public class Main extends SimpleApplication {
 
     }
 
-    public Geometry initBox(Vector3f pos) {
+    public Geometry initBox(Vector3f pos, ColorRGBA color) {
         Box b = new Box(pos, 0.5f, 0.5f, 3);
         Geometry geom = new Geometry("Box", b);
         
@@ -77,9 +77,9 @@ public class Main extends SimpleApplication {
         TangentBinormalGenerator.generate(geom.getMesh(), true);
         Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setBoolean("UseMaterialColors", true);
-        mat.setColor("Ambient", ColorRGBA.White);
-        mat.setColor("Diffuse", ColorRGBA.White);
-        mat.setColor("Specular", ColorRGBA.White);
+        mat.setColor("Ambient", color);
+        mat.setColor("Diffuse", color);
+        mat.setColor("Specular", color);
         mat.setFloat("Shininess", 1);
         geom.setMaterial(mat);
         //Node n = new Node();
@@ -100,9 +100,9 @@ public class Main extends SimpleApplication {
     public void simpleInitApp() {
         lightInit();
         g = new Geometry[3];
-        g[0] = initBox(new Vector3f(0, 0, 0));
-        g[1] = initBox(new Vector3f(0, 0, 0));
-        g[2] = initBox(new Vector3f(0, 0, 0));
+        g[0] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Red);
+        g[1] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Green);
+        g[2] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Blue);
         
         g[0].rotate(ROLL045);
         g[0].rotate(PITCH045);
