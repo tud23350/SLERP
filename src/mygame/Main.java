@@ -40,6 +40,7 @@ public class Main extends SimpleApplication {
     Quaternion q_buffer1;
     Quaternion q_buffer2;
     Geometry g[];
+    Node n[];
     float XYZW[];
     float counter = 0;
     boolean countUp = true;
@@ -86,7 +87,7 @@ public class Main extends SimpleApplication {
         //n.attachChild(geom);
         //rootNode.attachChild(n);
         //return n;
-        rootNode.attachChild(geom);
+        //rootNode.attachChild(geom);
         geom.setCullHint(Spatial.CullHint.Never);
         return geom;
     }
@@ -104,9 +105,20 @@ public class Main extends SimpleApplication {
         g[0] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Red);
         g[1] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Green);
         g[2] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Blue);
+        
+        n = new Node[3];
+        n[0] = new Node();
+        n[1] = new Node();
+        n[2] = new Node();
+        n[0].attachChild(g[0]);
+        n[1].attachChild(g[1]);
+        n[2].attachChild(g[2]);
+        rootNode.attachChild(n[0]);
+        rootNode.attachChild(n[1]);
+        rootNode.attachChild(n[2]);
 
-        g[0].rotate(ROLL045);
-        g[0].rotate(PITCH045);
+        //g[0].rotate(ROLL045);
+        //g[0].rotate(PITCH045);
 
         flyCam.setMoveSpeed(10);
         //models m=new models(this);
@@ -114,14 +126,14 @@ public class Main extends SimpleApplication {
         q = new Quaternion[3];
         XYZW = new float[4];
 
-        q[0] = g[0].getLocalRotation();
+        q[0] = n[0].getLocalRotation();
         XYZW[0] = q[0].getX();
         XYZW[1] = q[0].getY();
         XYZW[2] = q[0].getZ();
         XYZW[3] = q[0].getW();
         q_buffer1 = (new Quaternion()).fromAngleNormalAxis(XYZW[3], new Vector3f(XYZW[0], XYZW[1], XYZW[2]));
 
-        q[2] = g[2].getLocalRotation();
+        q[2] = n[2].getLocalRotation();
         XYZW[0] = q[2].getX();
         XYZW[1] = q[2].getY();
         XYZW[2] = q[2].getZ();
@@ -135,6 +147,22 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
 
+        q[0] = n[0].getLocalRotation();
+        XYZW[0] = q[0].getX();
+        XYZW[1] = q[0].getY();
+        XYZW[2] = q[0].getZ();
+        XYZW[3] = q[0].getW();
+        q_buffer1 = (new Quaternion()).fromAngleNormalAxis(XYZW[3], new Vector3f(XYZW[0], XYZW[1], XYZW[2]));
+
+        q[2] = n[2].getLocalRotation();
+        XYZW[0] = q[2].getX();
+        XYZW[1] = q[2].getY();
+        XYZW[2] = q[2].getZ();
+        XYZW[3] = q[2].getW();
+        q_buffer2 = (new Quaternion()).fromAngleNormalAxis(XYZW[3], new Vector3f(XYZW[0], XYZW[1], XYZW[2]));
+//        System.out.println("Data: "+q[0].getX()+"  "+q[0].getY()+"  "+q[0].getZ());
+
+        
         counter = countUp ? counter + tpf / 2.0f : counter - tpf / 2.0f;
         counter = counter > 1.0f ? 1.0f : counter;
         counter = counter < 0.0f ? 0.0f : counter;
@@ -142,7 +170,7 @@ public class Main extends SimpleApplication {
         countUp = counter == 0.0f ? true : countUp;
 
 
-        g[1].setLocalRotation((new Quaternion()).slerp(q_buffer1, q_buffer2, counter));
+        n[1].setLocalRotation((new Quaternion()).slerp(q_buffer1, q_buffer2, counter));
 
         //pssm.setDirection(new Vector3f(-.5f+counter, -.5f, -.5f).normalizeLocal());
         // sun.setDirection((new Vector3f(-0.5f+counter, -0.5f, -0.5f)).normalizeLocal());
@@ -172,44 +200,44 @@ public class Main extends SimpleApplication {
     private AnalogListener analogListener = new AnalogListener() {
         public void onAnalog(String name, float value, float tpf) {
             if (name.contains("Rotate_start_Up")) {
-                g[0].rotate(value * speed, 0, 0);
+                n[0].rotate(-value * speed, 0, 0);
             }
             if (name.equals("Rotate_start_Down")) {
-                g[0].rotate(-value * speed, 0, 0);
+                n[0].rotate(value * speed, 0, 0);
             }
             if (name.equals("Rotate_start_Left")) {
-                g[0].rotate(0, -value * speed, 0);
+                n[0].rotate(0, -value * speed, 0);
             }
             if (name.equals("Rotate_start_Right")) {
-                g[0].rotate(0, value * speed, 0);
+                n[0].rotate(0, value * speed, 0);
             }
             if (name.equals("Rotate_start_hiddenZ")) {
-                g[0].rotate(0, 0, value * speed);
+                n[0].rotate(0, 0, value * speed);
             }
             if (name.equals("Rotate_start_hidden-Z")) {
-                g[0].rotate(0, 0, -value * speed);
+                n[0].rotate(0, 0, -value * speed);
             }
             if (name.equals("Move_start_Right")) {
-                Vector3f v = g[0].getLocalTranslation();
-                g[0].setLocalTranslation(v.x + value * speed, v.y, v.z);
+                Vector3f v = n[0].getLocalTranslation();
+                n[0].setLocalTranslation(v.x + value * speed, v.y, v.z);
             }
             if (name.equals("Rotate_end_Up")) {
-                g[2].rotate(value * speed, 0, 0);
+                n[2].rotate(-value * speed, 0, 0);
             }
             if (name.equals("Rotate_end_Down")) {
-                g[2].rotate(-value * speed, 0, 0);
+                n[2].rotate(value * speed, 0, 0);
             }
             if (name.equals("Rotate_end_Left")) {
-                g[2].rotate(0, -value * speed, 0);
+                n[2].rotate(0, -value * speed, 0);
             }
             if (name.equals("Rotate_end_Right")) {
-                g[2].rotate(0, value * speed, 0);
+                n[2].rotate(0, value * speed, 0);
             }
             if (name.equals("Rotate_end_hiddenZ")) {
-                g[2].rotate(0, 0, value * speed);
+                n[2].rotate(0, 0, value * speed);
             }
             if (name.equals("Rotate_end_hidden-Z")) {
-                g[2].rotate(0, 0, -value * speed);
+                n[2].rotate(0, 0, -value * speed);
             }
         }
     };
