@@ -183,10 +183,12 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("Rotate_start_Right", new KeyTrigger(KeyInput.KEY_L));
         inputManager.addMapping("Rotate_start_hiddenZ", new KeyTrigger(KeyInput.KEY_U));
         inputManager.addMapping("Rotate_start_hidden-Z", new KeyTrigger(KeyInput.KEY_O));
-        inputManager.addMapping("Move_start_Up", new KeyTrigger(KeyInput.KEY_M));
-        inputManager.addMapping("Move_start_Down", new KeyTrigger(KeyInput.KEY_S));
-        inputManager.addMapping("Move_start_Left", new KeyTrigger(KeyInput.KEY_A));
-        inputManager.addMapping("Move_start_Right", new KeyTrigger(KeyInput.KEY_D));
+        inputManager.addMapping("Move_start_Up", new KeyTrigger(KeyInput.KEY_1));
+        inputManager.addMapping("Move_start_Down", new KeyTrigger(KeyInput.KEY_X));
+        inputManager.addMapping("Move_start_Left", new KeyTrigger(KeyInput.KEY_C));
+        inputManager.addMapping("Move_start_Right", new KeyTrigger(KeyInput.KEY_V));
+        inputManager.addMapping("Move_start_hiddenIn", new KeyTrigger(KeyInput.KEY_LBRACKET));
+        inputManager.addMapping("Move_start_hiddenOut", new KeyTrigger(KeyInput.KEY_RBRACKET));
         inputManager.addMapping("Rotate_start_hiddenZ", new KeyTrigger(KeyInput.KEY_U));
         inputManager.addMapping("Rotate_start_hidden-Z", new KeyTrigger(KeyInput.KEY_O));
         inputManager.addMapping("Rotate_end_Up", new KeyTrigger(KeyInput.KEY_T));
@@ -195,7 +197,13 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("Rotate_end_Right", new KeyTrigger(KeyInput.KEY_H));
         inputManager.addMapping("Rotate_end_hiddenZ", new KeyTrigger(KeyInput.KEY_R));
         inputManager.addMapping("Rotate_end_hidden-Z", new KeyTrigger(KeyInput.KEY_Y));
-        inputManager.addListener(analogListener, new String[]{"Move_start_Up", "Move_start_Down", "Move_start_Left", "Move_start_Right", "Rotate_start_Up", "Rotate_start_Down", "Rotate_start_Left", "Rotate_start_Right", "Rotate_start_hiddenZ", "Rotate_start_hidden-Z", "Rotate_end_Up", "Rotate_end_Down", "Rotate_end_Left", "Rotate_end_Right", "Rotate_end_hiddenZ", "Rotate_end_hidden-Z"});
+        inputManager.addMapping("Move_end_Up", new KeyTrigger(KeyInput.KEY_B));
+        inputManager.addMapping("Move_end_Down", new KeyTrigger(KeyInput.KEY_N));
+        inputManager.addMapping("Move_end_Left", new KeyTrigger(KeyInput.KEY_M));
+        inputManager.addMapping("Move_end_Right", new KeyTrigger(KeyInput.KEY_COMMA));
+        inputManager.addMapping("Move_end_hiddenIn", new KeyTrigger(KeyInput.KEY_3));
+        inputManager.addMapping("Move_end_hiddenOut", new KeyTrigger(KeyInput.KEY_E));
+        inputManager.addListener(analogListener, new String[]{"Move_start_hiddenIn","Move_start_hiddenOut","Move_end_hiddenIn","Move_end_hiddenOut","Move_end_Up","Move_end_Down","Move_end_Left","Move_end_Right","Move_start_Up", "Move_start_Down", "Move_start_Left", "Move_start_Right", "Rotate_start_Up", "Rotate_start_Down", "Rotate_start_Left", "Rotate_start_Right", "Rotate_start_hiddenZ", "Rotate_start_hidden-Z", "Rotate_end_Up", "Rotate_end_Down", "Rotate_end_Left", "Rotate_end_Right", "Rotate_end_hiddenZ", "Rotate_end_hidden-Z"});
     }
     private AnalogListener analogListener = new AnalogListener() {
         public void onAnalog(String name, float value, float tpf) {
@@ -217,9 +225,29 @@ public class Main extends SimpleApplication {
             if (name.equals("Rotate_start_hidden-Z")) {
                 n[0].rotate(0, 0, -value * speed);
             }
+            if (name.equals("Move_start_Up")) {
+                Vector3f v = g[0].getLocalTranslation();
+                g[0].setLocalTranslation(v.x, v.y + value * speed, v.z);
+            }
+            if (name.equals("Move_start_Down")) {
+                Vector3f v = g[0].getLocalTranslation();
+                g[0].setLocalTranslation(v.x, v.y - value * speed, v.z);
+            }
             if (name.equals("Move_start_Right")) {
-                Vector3f v = n[0].getLocalTranslation();
-                n[0].setLocalTranslation(v.x + value * speed, v.y, v.z);
+                Vector3f v = g[0].getLocalTranslation();
+                g[0].setLocalTranslation(v.x + value * speed, v.y, v.z);
+            }
+            if (name.equals("Move_start_Left")) {
+                Vector3f v = g[0].getLocalTranslation();
+                g[0].setLocalTranslation(v.x - value * speed, v.y, v.z);
+            }
+            if(name.equals("Move_start_hiddenIn")){
+                Vector3f v = g[0].getLocalTranslation();
+                g[0].setLocalTranslation(v.x,v.y,v.z - value*speed);
+            }
+            if(name.equals("Move_start_hiddenOut")){
+                Vector3f v = g[0].getLocalTranslation();
+                g[0].setLocalTranslation(v.x,v.y,v.z + value *speed);
             }
             if (name.equals("Rotate_end_Up")) {
                 n[2].rotate(-value * speed, 0, 0);
@@ -238,6 +266,30 @@ public class Main extends SimpleApplication {
             }
             if (name.equals("Rotate_end_hidden-Z")) {
                 n[2].rotate(0, 0, -value * speed);
+            }
+            if (name.equals("Move_end_Up")) {
+                Vector3f v = g[2].getLocalTranslation();
+                g[2].setLocalTranslation(v.x, v.y + value * speed, v.z);
+            }
+            if (name.equals("Move_end_Down")) {
+                Vector3f v = g[2].getLocalTranslation();
+                g[2].setLocalTranslation(v.x, v.y - value * speed, v.z);
+            }
+            if (name.equals("Move_end_Right")) {
+                Vector3f v = g[2].getLocalTranslation();
+                g[2].setLocalTranslation(v.x + value * speed, v.y, v.z);
+            }
+            if (name.equals("Move_end_Left")) {
+                Vector3f v = g[2].getLocalTranslation();
+                g[2].setLocalTranslation(v.x - value * speed, v.y, v.z);
+            }
+            if(name.equals("Move_end_hiddenIn")){
+                Vector3f v = g[2].getLocalTranslation();
+                g[2].setLocalTranslation(v.x,v.y,v.z - value*speed);
+            }
+            if(name.equals("Move_end_hiddenOut")){
+                Vector3f v = g[2].getLocalTranslation();
+                g[2].setLocalTranslation(v.x,v.y,v.z + value *speed);
             }
         }
     };
