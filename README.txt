@@ -8,5 +8,5 @@ U,O -> z-axis for start rotation
 J,L -> x-axis for start rotation
 I,K -> y-axis for start rotation
 
-Z,X,C,V -> to move end (up,down,left,right respectively)
-B,N,M,the key ',' -> to move start (up,down,left,right respectively)
+1,X,C,V,the key '[',the key ']' -> to move start (up,down,left,right,in,out respectively)
+B,N,M,the key ',',3,E -> to move start (up,down,left,right,in,out respectively)
