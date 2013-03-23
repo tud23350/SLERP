@@ -30,8 +30,6 @@ import com.jme3.util.TangentBinormalGenerator;
  */
 public class Main extends SimpleApplication {
 
-    public static final Quaternion PITCH045 = new Quaternion().fromAngleAxis(FastMath.PI / 3, new Vector3f(1, 0, 0));
-    public static final Quaternion ROLL045 = new Quaternion().fromAngleAxis(FastMath.PI / 4, new Vector3f(0, 0, 1));
     SpotLight spot = new SpotLight();
     PssmShadowRenderer pssm;
     BasicShadowRenderer bsr;
@@ -41,7 +39,6 @@ public class Main extends SimpleApplication {
     Quaternion q_buffer2;
     Geometry g[];
     Node n[];
-    float XYZW[];
     float counter = 0;
     boolean countUp = true;
 
@@ -117,29 +114,13 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(n[1]);
         rootNode.attachChild(n[2]);
 
-        //g[0].rotate(ROLL045);
-        //g[0].rotate(PITCH045);
-
         flyCam.setMoveSpeed(10);
         //models m=new models(this);
 
         q = new Quaternion[3];
-        XYZW = new float[4];
 
         q[0] = n[0].getLocalRotation();
-        XYZW[0] = q[0].getX();
-        XYZW[1] = q[0].getY();
-        XYZW[2] = q[0].getZ();
-        XYZW[3] = q[0].getW();
-        q_buffer1 = (new Quaternion()).fromAngleNormalAxis(XYZW[3], new Vector3f(XYZW[0], XYZW[1], XYZW[2]));
-
         q[2] = n[2].getLocalRotation();
-        XYZW[0] = q[2].getX();
-        XYZW[1] = q[2].getY();
-        XYZW[2] = q[2].getZ();
-        XYZW[3] = q[2].getW();
-        q_buffer2 = (new Quaternion()).fromAngleNormalAxis(XYZW[3], new Vector3f(XYZW[0], XYZW[1], XYZW[2]));
-//        System.out.println("Data: "+q[0].getX()+"  "+q[0].getY()+"  "+q[0].getZ());
 
 
     }
@@ -148,20 +129,7 @@ public class Main extends SimpleApplication {
     public void simpleUpdate(float tpf) {
 
         q[0] = n[0].getLocalRotation();
-        XYZW[0] = q[0].getX();
-        XYZW[1] = q[0].getY();
-        XYZW[2] = q[0].getZ();
-        XYZW[3] = q[0].getW();
-        q_buffer1 = (new Quaternion()).fromAngleNormalAxis(XYZW[3], new Vector3f(XYZW[0], XYZW[1], XYZW[2]));
-
         q[2] = n[2].getLocalRotation();
-        XYZW[0] = q[2].getX();
-        XYZW[1] = q[2].getY();
-        XYZW[2] = q[2].getZ();
-        XYZW[3] = q[2].getW();
-        q_buffer2 = (new Quaternion()).fromAngleNormalAxis(XYZW[3], new Vector3f(XYZW[0], XYZW[1], XYZW[2]));
-//        System.out.println("Data: "+q[0].getX()+"  "+q[0].getY()+"  "+q[0].getZ());
-
         
         counter = countUp ? counter + tpf / 2.0f : counter - tpf / 2.0f;
         counter = counter > 1.0f ? 1.0f : counter;
@@ -169,9 +137,8 @@ public class Main extends SimpleApplication {
         countUp = counter == 1.0f ? false : countUp;
         countUp = counter == 0.0f ? true : countUp;
 
-
-        n[1].setLocalRotation((new Quaternion()).slerp(q_buffer1, q_buffer2, counter));
-
+        n[1].setLocalRotation((new Quaternion()).slerp(q[0], q[2], counter));
+        
         //pssm.setDirection(new Vector3f(-.5f+counter, -.5f, -.5f).normalizeLocal());
         // sun.setDirection((new Vector3f(-0.5f+counter, -0.5f, -0.5f)).normalizeLocal());
     }
