@@ -37,7 +37,7 @@ public class Main extends SimpleApplication {
     Quaternion q[];
     Quaternion q_buffer1;
     Quaternion q_buffer2;
-    Geometry g[];
+    Spatial g[];
     Node n[];
     float counter = 0;
     boolean countUp = true;
@@ -66,27 +66,33 @@ public class Main extends SimpleApplication {
 
     }
 
-    public Geometry initBox(Vector3f pos, ColorRGBA color) {
-        Box b = new Box(pos, 0.5f, 0.5f, 3);
-        Geometry geom = new Geometry("Box", b);
-
-        geom.setShadowMode(ShadowMode.CastAndReceive);
-
-        TangentBinormalGenerator.generate(geom.getMesh(), true);
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setBoolean("UseMaterialColors", true);
-        mat.setColor("Ambient", color);
-        mat.setColor("Diffuse", color);
-        mat.setColor("Specular", color);
-        mat.setFloat("Shininess", 1);
-        geom.setMaterial(mat);
-        //Node n = new Node();
-        //n.attachChild(geom);
-        //rootNode.attachChild(n);
-        //return n;
-        //rootNode.attachChild(geom);
-        geom.setCullHint(Spatial.CullHint.Never);
-        return geom;
+    public Spatial initBox(Vector3f pos, ColorRGBA color) {
+//        Box b = new Box(pos, 0.5f, 0.5f, 3);
+//        Geometry geom = new Geometry("Box", b);
+//
+//        geom.setShadowMode(ShadowMode.CastAndReceive);
+//
+//        TangentBinormalGenerator.generate(geom.getMesh(), true);
+//        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+//        mat.setBoolean("UseMaterialColors", true);
+//        mat.setColor("Ambient", color);
+//        mat.setColor("Diffuse", color);
+//        mat.setColor("Specular", color);
+//        mat.setFloat("Shininess", 1);
+//        geom.setMaterial(mat);
+//        //Node n = new Node();
+//        //n.attachChild(geom);
+//        //rootNode.attachChild(n);
+//        //return n;
+//        //rootNode.attachChild(geom);
+//        geom.setCullHint(Spatial.CullHint.Never);
+        
+        Spatial elephant = getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
+        elephant.scale(0.05f, 0.05f, 0.05f);
+        elephant.rotate(0.0f, -3.0f, 0.0f);
+        elephant.setLocalTranslation(pos);
+        
+        return elephant;
     }
 
     public static void main(String[] args) {
@@ -98,7 +104,7 @@ public class Main extends SimpleApplication {
     public void simpleInitApp() {
         lightInit();
         initKeys();
-        g = new Geometry[3];
+        g = new Spatial[3];
         g[0] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Red);
         g[1] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Green);
         g[2] = initBox(new Vector3f(0, 0, 0), ColorRGBA.Blue);
