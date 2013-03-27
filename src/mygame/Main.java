@@ -67,27 +67,11 @@ public class Main extends SimpleApplication {
     }
 
     public Spatial initBox(Vector3f pos, ColorRGBA color) {
-//        Box b = new Box(pos, 0.5f, 0.5f, 3);
-//        Geometry geom = new Geometry("Box", b);
-//
-//        geom.setShadowMode(ShadowMode.CastAndReceive);
-//
-//        TangentBinormalGenerator.generate(geom.getMesh(), true);
-//        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-//        mat.setBoolean("UseMaterialColors", true);
-//        mat.setColor("Ambient", color);
-//        mat.setColor("Diffuse", color);
-//        mat.setColor("Specular", color);
-//        mat.setFloat("Shininess", 1);
-//        geom.setMaterial(mat);
-//        //Node n = new Node();
-//        //n.attachChild(geom);
-//        //rootNode.attachChild(n);
-//        //return n;
-//        //rootNode.attachChild(geom);
-//        geom.setCullHint(Spatial.CullHint.Never);
-        
+
         Spatial elephant = getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", color);
+        elephant.setMaterial(mat);
         elephant.scale(0.05f, 0.05f, 0.05f);
         elephant.rotate(0.0f, -3.0f, 0.0f);
         elephant.setLocalTranslation(pos);
